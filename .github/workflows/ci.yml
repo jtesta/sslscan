@@ -18,12 +18,12 @@ jobs:
           pushd openssl
           git fetch --tags
           git checkout openssl-3.5.0
-          ./config
+          ./config --prefix=/opt/openssl35 shared
           make -j $(nproc --all)
           make install
           popd
 
-          make sslscan
+          make sslscan LDFLAGS=-L/opt/openssl35 CFLAGS=-I/opt/openssl35/include
           make static
         env:
           CC: ${{ matrix.cc }}
